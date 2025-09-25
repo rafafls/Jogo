@@ -75,6 +75,32 @@
     const foodImg = new Image();
     foodImg.src = 'comida.png';
 
+    // Detectar gestos de swipe no celular
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  canvas.addEventListener('touchstart', e => {
+  const touch = e.touches[0];
+  touchStartX = touch.clientX;
+  touchStartY = touch.clientY;
+  }, false);
+
+  canvas.addEventListener('touchend', e => {
+  const touch = e.changedTouches[0];
+  const dx = touch.clientX - touchStartX;
+  const dy = touch.clientY - touchStartY;
+
+    if(Math.abs(dx) > Math.abs(dy)) {
+    // movimento horizontal
+    if(dx > 30 && dir.x !== -1) dir = {x:1, y:0}; // direita
+    else if(dx < -30 && dir.x !== 1) dir = {x:-1, y:0}; // esquerda
+    } else {
+    // movimento vertical
+    if(dy > 30 && dir.y !== -1) dir = {x:0, y:1}; // baixo
+    else if(dy < -30 && dir.y !== 1) dir = {x:0, y:-1}; // cima
+  }
+  }, false);  
+
     function reset(){
       snake = [{x:12,y:12},{x:11,y:12},{x:10,y:12}];
       dir = {x:1,y:0};
